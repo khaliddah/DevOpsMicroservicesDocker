@@ -5,23 +5,26 @@
  */
 package com.projet.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projet.dto.LoginRequest;
 import com.projet.dto.RegisterRequest;
 import com.projet.service.AuthService;
+import org.hibernate.boot.jaxb.Origin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  *
  * @author KHALID
  */
+
 @RestController
 @RequestMapping("api/auth")
+@CrossOrigin(origins ={"localhost:4200"})
 public class AuthController {
     
     @Autowired
@@ -32,10 +35,10 @@ public class AuthController {
         authService.signup(registerRequest);
         return new ResponseEntity(HttpStatus.OK);
     }
-    
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest){
-       return authService.login(loginRequest);
+    public HashMap<String, String> login(@RequestBody LoginRequest loginRequest){
+
+        return authService.login(loginRequest);
     }
 }
 

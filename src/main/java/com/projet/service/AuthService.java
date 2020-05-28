@@ -18,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 /**
  *
  * @author KHALID
@@ -46,11 +48,15 @@ public class AuthService {
         return passwordEncoder.encode(password);
     }
 
-    public String login(LoginRequest loginRequest) {
+    public HashMap<String, String> login(LoginRequest loginRequest) {
         Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generateToken(authentication);
+        HashMap<String, String> resp = new HashMap<String, String>();
+        resp.put("username", authentication.getName());
+        String token = jwtProvider.generateToken(authentication);
+        resp.put("authenticationToken", token);
+        return resp;
     }
     
 }
